@@ -65,6 +65,16 @@ public class TikvStdSessions extends TikvSessions {
 
         TiConfiguration conf = TiConfiguration.createRawDefault(
                                this.config.get(TikvOptions.TIKV_PDS));
+        conf.setBatchGetConcurrency(
+                this.config.get(TikvOptions.TIKV_BATCH_GET_CONCURRENCY));
+        conf.setBatchPutConcurrency(
+                this.config.get(TikvOptions.TIKV_BATCH_PUT_CONCURRENCY));
+        conf.setBatchDeleteConcurrency(
+                this.config.get(TikvOptions.TIKV_BATCH_DELETE_CONCURRENCY));
+        conf.setBatchScanConcurrency(
+                this.config.get(TikvOptions.TIKV_BATCH_SCAN_CONCURRENCY));
+        conf.setDeleteRangeConcurrency(
+                this.config.get(TikvOptions.TIKV_DELETE_RANGE_CONCURRENCY));
         TiSession session = TiSession.create(conf);
         this.tikvClient = session.createRawClient();
 
