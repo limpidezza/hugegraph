@@ -75,7 +75,6 @@ import com.baidu.hugegraph.iterator.FlatMapperIterator;
 import com.baidu.hugegraph.iterator.LimitIterator;
 import com.baidu.hugegraph.iterator.ListIterator;
 import com.baidu.hugegraph.iterator.MapperIterator;
-import com.baidu.hugegraph.iterator.WrappedIterator;
 import com.baidu.hugegraph.job.system.DeleteExpiredJob;
 import com.baidu.hugegraph.perf.PerfUtil.Watched;
 import com.baidu.hugegraph.schema.EdgeLabel;
@@ -600,7 +599,18 @@ public class GraphTransaction extends IndexableTransaction {
     @Watched(prefix = "graph")
     public HugeVertex constructVertex(boolean verifyVL, Object... keyValues) {
         HugeElement.ElementKeys elemKeys = HugeElement.classifyKeys(keyValues);
-
+        if (possibleOlapVertex(elemKeys)) {
+            Id id = HugeVertex.getIdValue(elemKeys.id());
+            HugeVertex vertex = HugeVertex.create(this, id,
+                                                  VertexLabel.ALL_VL);
+            ElementHelper.attachProperties(vertex, keyValues);
+            Iterator<HugeProperty<?>> iterator = vertex.getProperties().values()
+                                                       .iterator();
+            assert iterator.hasNext();
+            if (iterator.next().propertyKey().readFrequency().olap()) {
+                return vertex;
+            }
+        }
         VertexLabel vertexLabel = this.checkVertexLabel(elemKeys.label(),
                                                         verifyVL);
         Id id = HugeVertex.getIdValue(elemKeys.id());
@@ -625,6 +635,11 @@ public class GraphTransaction extends IndexableTransaction {
         }
 
         return vertex;
+    }
+
+    private boolean possibleOlapVertex(HugeElement.ElementKeys elemKeys) {
+        return elemKeys.id() != null && elemKeys.label() == null &&
+               elemKeys.keys().size() == 1;
     }
 
     @Watched(prefix = "graph")
