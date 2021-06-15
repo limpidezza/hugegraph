@@ -23,6 +23,7 @@ import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+import com.baidu.hugegraph.api.traversers.TraversersApiTestSuite;
 import com.baidu.hugegraph.dist.RegisterUtil;
 
 @RunWith(Suite.class)
@@ -36,7 +37,8 @@ import com.baidu.hugegraph.dist.RegisterUtil;
     TaskApiTest.class,
     GremlinApiTest.class,
     MetricsApiTest.class,
-    UserApiTest.class
+    UserApiTest.class,
+    TraversersApiTestSuite.class
 })
 public class ApiTestSuite {
 

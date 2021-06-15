@@ -29,9 +29,4 @@ import com.baidu.hugegraph.dist.RegisterUtil;
     TemplatePathsApiTest.class
 })
 public class TraversersApiTestSuite {
-
-    @BeforeClass
-    public static void initEnv() {
-        RegisterUtil.registerBackends();
-    }
 }

@@ -8,7 +8,6 @@ import org.junit.Test;
 import com.baidu.hugegraph.api.BaseApiTest;
 import com.google.common.collect.ImmutableMap;
 
-
 public class AllShortestPathsApiTest extends BaseApiTest {
 
     public static String path = "graphs/hugegraph/traversers/allshortestpaths";

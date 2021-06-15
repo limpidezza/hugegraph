@@ -461,7 +461,7 @@ public class BaseApiTest {
     }
 
     protected static String getVertexId(String label, String key, String value)
-            throws IOException {
+                                        throws IOException {
         String props = mapper.writeValueAsString(ImmutableMap.of(key, value));
         Map<String, Object> params = ImmutableMap.of(
                 "label", label,
@@ -556,14 +556,14 @@ public class BaseApiTest {
             JsonNode element = root.get(key);
             if (element == null) {
                 throw new HugeException(String.format(
-                        "Can't find value of the key: %s in json.", key));
+                          "Can't find value of the key: %s in json.", key));
             }
             JavaType type = mapper.getTypeFactory()
                                   .constructParametricType(List.class, clazz);
             return mapper.readValue(element.toString(), type);
         } catch (IOException e) {
             throw new HugeException(String.format(
-                    "Failed to deserialize %s", content), e);
+                      "Failed to deserialize %s", content), e);
         }
     }
 
