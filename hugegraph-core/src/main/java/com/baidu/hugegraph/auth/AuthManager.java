@@ -21,7 +21,6 @@ package com.baidu.hugegraph.auth;
 
 import java.util.List;
 
-import com.baidu.hugegraph.auth.RolePermission;
 import com.baidu.hugegraph.auth.SchemaDefine.AuthElement;
 import com.baidu.hugegraph.backend.id.Id;
 
@@ -73,4 +72,12 @@ public interface AuthManager {
     public RolePermission rolePermission(AuthElement element);
 
     public RolePermission loginUser(String username, String password);
+
+    public Id createProject(HugeProject project);
+    public HugeProject deleteProject(Id id);
+    public Id updateProject(HugeProject project);
+    public Id updateProjectAddGraph(Id id, String graph);
+    public Id updateProjectRemoveGraph(Id id, String graph);
+    public HugeProject getProject(Id id);
+    public List<HugeProject> listAllProject(long limit);
 }

@@ -40,6 +40,7 @@ import org.apache.tinkerpop.shaded.jackson.databind.ser.std.StdSerializer;
 
 import com.baidu.hugegraph.HugeException;
 import com.baidu.hugegraph.auth.SchemaDefine.AuthElement;
+import com.baidu.hugegraph.backend.id.Id;
 import com.baidu.hugegraph.structure.HugeElement;
 import com.baidu.hugegraph.traversal.optimize.TraversalUtil;
 import com.baidu.hugegraph.type.Namifiable;
@@ -136,7 +137,13 @@ public class HugeResource {
     }
 
     private boolean filter(AuthElement element) {
-        assert this.type.match(element.type());
+        ResourceType elementType = element.type();
+        assert this.type.match(elementType);
+        if (elementType == ResourceType.PROJECT) {
+            Id elementId = element.id();
+            assert elementId != null;
+            return this.matchLabel(elementId.asString());
+        }
         if (element instanceof Namifiable) {
             if (!this.filter((Namifiable) element)) {
                 return false;
